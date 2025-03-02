@@ -36,6 +36,7 @@ Thumbs.db
 # Cloudflare specific
 .wrangler/
 .dev.vars
+wrangler_local.jsonc
 
 # Testing
 coverage/
