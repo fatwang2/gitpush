@@ -1,0 +1,48 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gitpush",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-12-30",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "workflows": [
+    {
+      "name": "GitPush",
+      "binding": "GitPush",
+      "class_name": "GitPushWorkflow"
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  "build": {
+    "command": "npm run build",
+    "watch_dir": "src",
+    "cwd": "."
+  },
+  "define": {
+    "process.env.NODE_DEBUG": "false"
+  },
+  "triggers": {
+    "crons": ["0 1 * * *"]
+  },
+  "vars": {
+    "GITHUB_REPOS": "YOUR_GITHUB_REPOS_HERE",
+    "GITHUB_TOKEN": "YOUR_GITHUB_TOKEN_HERE",
+    "EMAIL_FROM_ADDRESS": "YOUR_EMAIL_FROM_ADDRESS_HERE",
+    "EMAIL_TO_ADDRESS": "YOUR_EMAIL_TO_ADDRESS_HERE"
+  },
+  "send_email": [
+    {
+      "name": "SEND_EMAIL",
+      "destination_address": "YOUR_EMAIL_TO_ADDRESS_HERE"
+    }
+  ]
+}
