@@ -60,15 +60,22 @@ export default function App() {
           }
         };
       });
+
+      // Check if workflow is completed by verifying html content exists
+      return Boolean(data?.html);
     } catch (err) {
       console.error('Error checking status:', err);
+      return false;
     }
   };
 
   useEffect(() => {
     if (workflowStatus?.id) {
-      const interval = setInterval(() => {
-        checkStatus(workflowStatus.id);
+      const interval = setInterval(async () => {
+        const isCompleted = await checkStatus(workflowStatus.id);
+        if (isCompleted) {
+          clearInterval(interval);
+        }
       }, 5000);
 
       return () => clearInterval(interval);
