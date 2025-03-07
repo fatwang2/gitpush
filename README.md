@@ -4,6 +4,8 @@ English | [简体中文](README_CN.md)
 
 An AI-powered GitHub Release Tracker that monitors your favorite repositories, summarizes updates using AI, and delivers them straight to your inbox.
 
+![CleanShot 2025-03-07 at 14 53 02@2x](https://github.com/user-attachments/assets/8b8058a3-b886-4398-886b-357a8e73f62d)
+
 ## Technology Stack
 
 GitPush is built on four core Cloudflare services:
