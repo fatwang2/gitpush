@@ -37,8 +37,11 @@ GitPush 基于四个核心的 Cloudflare 服务构建：
 > **注意**：本项目设计为在 Cloudflare Workers 上运行，需要 Cloudflare 的基础设施。由于依赖 Cloudflare 特有的功能（如 Email API 和 AI 功能），无法在本地运行。
 
 ```bash
+# 安装依赖
 pnpm install
-pnpm run deploy
+
+# 部署到 Cloudflare Workers
+pnpm run publish
 ```
 
 ## 使用方法
@@ -52,14 +55,20 @@ pnpm run deploy
 
 ### 手动触发
 
-除了自动更新，你还可以通过以下两种方式手动触发工作流：
+你可以通过以下三种方式手动触发工作流：
 
-1. **使用 cURL 命令**
+1. **使用网页界面**
 
-发送带有目标仓库的 POST 请求：
+最简单的使用方式：
+1. 访问你部署的应用 URL（例如：`https://your-worker.workers.dev`）
+2. 输入你想要监控的 GitHub 仓库 URL
+3. 点击 "开始工作流" 触发工作流
 
+2. **使用 API**
+
+创建工作流：
 ```bash
-curl -X POST https://your-worker.workers.dev \
+curl -X POST https://your-worker.workers.dev/api/workflow/create \
   -H "Content-Type: application/json" \
   -d '{
     "repo_urls": [
@@ -69,7 +78,16 @@ curl -X POST https://your-worker.workers.dev \
   }'
 ```
 
-2. **使用 Cloudflare 仪表板**
+查询工作流状态：
+```bash
+curl -X POST https://your-worker.workers.dev/api/workflow/status \
+  -H "Content-Type: application/json" \
+  -d '{
+    "instanceId": "your-workflow-instance-id"
+  }'
+```
+
+3. **使用 Cloudflare 仪表板**
 
 - 访问 [Cloudflare 仪表板](https://dash.cloudflare.com)
 - 导航到 Compute(Workers) > Workflows > 你的工作流

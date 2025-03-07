@@ -37,12 +37,14 @@ GitPush is built on four core Cloudflare services:
 > **Note**: This project is designed to run on Cloudflare Workers and requires Cloudflare's infrastructure. It cannot be run locally due to its dependencies on Cloudflare-specific features like Email API and AI capabilities.
 
 ```bash
+# Install dependencies
 pnpm install
-pnpm run deploy
+
+# Deploy to Cloudflare Workers
+pnpm run publish
 ```
 
 ## Usage
-
 ### Automatic Updates
 
 Once deployed, GitPush will automatically:
@@ -52,14 +54,20 @@ Once deployed, GitPush will automatically:
 
 ### Manual Triggers
 
-Besides automatic updates, you can also manually trigger the workflow in two ways:
+You can manually trigger the workflow in three ways:
 
-1. **Using cURL Command**
+1. **Using Web Interface**
 
-Send a POST request with your target repositories:
+The easiest way to use GitPush:
+1. Visit your deployed application URL (e.g., `https://your-worker.workers.dev`)
+2. Enter the GitHub repository URLs you want to monitor
+3. Click "Start Workflow" to trigger the workflow
 
+2. **Using API**
+
+Create a workflow:
 ```bash
-curl -X POST https://your-worker.workers.dev \
+curl -X POST https://your-worker.workers.dev/api/workflow/create \
   -H "Content-Type: application/json" \
   -d '{
     "repo_urls": [
@@ -69,7 +77,16 @@ curl -X POST https://your-worker.workers.dev \
   }'
 ```
 
-2. **Using Cloudflare Dashboard**
+Check workflow status:
+```bash
+curl -X POST https://your-worker.workers.dev/api/workflow/status \
+  -H "Content-Type: application/json" \
+  -d '{
+    "instanceId": "your-workflow-instance-id"
+  }'
+```
+
+3. **Using Cloudflare Dashboard**
 
 - Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
 - Navigate to Compute(Workers) > Workflows > Your Workflow
