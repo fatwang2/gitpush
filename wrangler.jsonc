@@ -2,7 +2,7 @@
  * For more details on how to configure Wrangler, refer to:
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
-{
+ {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "gitpush",
   "main": "src/index.ts",
@@ -15,7 +15,7 @@
   "workflows": [
     {
       "name": "GitPush",
-      "binding": "GitPush",
+      "binding": "GITPUSH",
       "class_name": "GitPushWorkflow"
     }
   ],
@@ -23,9 +23,12 @@
     "binding": "AI"
   },
   "build": {
-    "command": "npm run build",
+    "command": "pnpm run build",
     "watch_dir": "src",
     "cwd": "."
+  },
+  "assets": {
+    "directory": "dist/client"
   },
   "define": {
     "process.env.NODE_DEBUG": "false"

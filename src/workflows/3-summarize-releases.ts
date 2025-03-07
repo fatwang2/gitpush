@@ -51,17 +51,17 @@ ${release.body}
   const prompt = `Please provide a detailed summary of the following GitHub repository updates:
 ${releasesText}
 
-Please format the output as follows:
+Please format the output concisely:
 
-**Repository Name**
-* Version: New features, improvements, fixes, and other major changes
-* Version: New features, improvements, fixes, and other major changes (mark breaking changes with ⚠️)
+**Repo Name**
+* v1.0: Key features & breaking changes (⚠️)
+* v0.9: Important updates & fixes
 
 Guidelines:
-1. Based on the original content, explain important changes to help users understand clearly
-2. Sort by impact level, with the most important changes first
-3. Maintain accuracy and readability, avoid oversimplification
-4. If the update includes example code or important usage instructions, please preserve them`;
+1. Focus on key changes and breaking updates
+2. Prioritize by importance
+3. Keep each point brief but clear
+4. Include critical code examples if any`;
 
   const response = await ai.run('@cf/deepseek-ai/deepseek-r1-distill-qwen-32b', {
     prompt: prompt
@@ -75,7 +75,7 @@ Guidelines:
     : JSON.stringify(response);
 
   // Remove think tags and their content
-  summaryText = summaryText.replace(/<think>[\s\S]*?<\/think>/g, '');
+  summaryText = summaryText.replace(/^[\s\S]*?<\/think>/g, '');
   
   // Clean up text:
   // 1. Remove leading whitespace and empty lines

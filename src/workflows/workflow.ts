@@ -42,7 +42,7 @@ export class GitPushWorkflow extends WorkflowEntrypoint<Env, Params> {
       {
         retries: {
           limit: 10,
-          delay: 5000 * 60,  // 5 minutes
+          delay: 5000 * 60,
           backoff: "constant"
         },
         timeout: "30 seconds"
@@ -55,11 +55,9 @@ export class GitPushWorkflow extends WorkflowEntrypoint<Env, Params> {
         }, this.env);
       }
     );
-
-    // Return complete results
     return {
-      ...summary,
-      email: emailResult
+      html: formattedContent.html,  
+      emailStatus: emailResult             
     };
   }
 }

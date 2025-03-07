@@ -9,33 +9,41 @@ export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
 
+    // Redirect /demo to frontend dev server during development
+    if (url.pathname.startsWith('/demo')) {
+      return Response.redirect('http://localhost:5173', 302);
+    }
+
     if (url.pathname.startsWith('/favicon')) {
       return Response.json({}, { status: 404 });
     }
 
-    // Get the status of an existing instance
-    const id = url.searchParams.get('instanceId');
-    if (id) {
-      const instance = await env.GITPUSH.get(id);
+    // API routes
+    if (url.pathname === '/api/workflow/status') {
+      // Get workflow status
+      const body = await req.json();
+      const instance = await env.GITPUSH.get(body.instanceId);
       const status = await instance.status();
-      // Return only final output, excluding debug information
       return Response.json(status.output || {});
     }
 
-    // Get repository URLs from request body
-    const { repo_urls } = await req.json();
-    
-    // Create new workflow instance
-    const instance = await env.GITPUSH.create({
-      id: await crypto.randomUUID(),
-      params: { repo_urls }
-    });
+    if (url.pathname === '/api/workflow/create') {
+      // Create new workflow
+      const { repo_urls } = await req.json();
+      const instance = await env.GITPUSH.create({
+        id: await crypto.randomUUID(),
+        params: { repo_urls }
+      });
 
-    const status = await instance.status();
-    return Response.json({
-      id: instance.id,
-      status
-    });
+      const status = await instance.status();
+      return Response.json({
+        id: instance.id,
+        status
+      });
+    }
+
+    // Handle unknown routes
+    return new Response('Not Found', { status: 404 });
   },
 
   workflows: {
