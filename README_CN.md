@@ -3,6 +3,7 @@
 [English](README.md) | 简体中文
 
 一个基于 AI 的 GitHub Release 追踪器，监控你关注的仓库，使用 AI 总结更新内容，并直接发送到你的邮箱。
+![CleanShot 2025-03-07 at 14 53 02@2x](https://github.com/user-attachments/assets/352d8ff3-3014-4793-8a00-e6ee4efa703f)
 
 ## 技术栈
 
